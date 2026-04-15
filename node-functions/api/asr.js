@@ -23,10 +23,12 @@ const readEnv = (context = {}) => ({
   ...(context.env || {}),
 })
 
+const getEnvValue = (env, primaryKey, fallbackKey) => env[primaryKey] || env[fallbackKey]
+
 const getRequiredConfig = (context) => {
   const env = readEnv(context)
-  const secretId = env.TENCENTCLOUD_SECRET_ID
-  const secretKey = env.TENCENTCLOUD_SECRET_KEY
+  const secretId = getEnvValue(env, 'STORYMAKEUP_ASR_SECRET_ID', 'TENCENTCLOUD_SECRET_ID')
+  const secretKey = getEnvValue(env, 'STORYMAKEUP_ASR_SECRET_KEY', 'TENCENTCLOUD_SECRET_KEY')
 
   if (!secretId || !secretKey) {
     throw new Error('服务端未配置腾讯云 ASR 密钥环境变量。')
@@ -35,8 +37,8 @@ const getRequiredConfig = (context) => {
   return {
     secretId,
     secretKey,
-    region: env.TENCENTCLOUD_REGION || DEFAULT_REGION,
-    engSerViceType: env.TENCENTCLOUD_ASR_ENG_SERVICE_TYPE || DEFAULT_ENGINE,
+    region: getEnvValue(env, 'STORYMAKEUP_ASR_REGION', 'TENCENTCLOUD_REGION') || DEFAULT_REGION,
+    engSerViceType: getEnvValue(env, 'STORYMAKEUP_ASR_ENG_SERVICE_TYPE', 'TENCENTCLOUD_ASR_ENG_SERVICE_TYPE') || DEFAULT_ENGINE,
   }
 }
 
