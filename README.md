@@ -24,4 +24,15 @@ npm run dev
 ## 教师端（可选）
 - 路由 `/teacher` 提供简单的句子拆词辅助，可在浏览器访问。
 
+## 云端朗读测试（腾讯云 ASR）
+- `朗读测试` 已改为前端录音 + EdgeOne Pages Node Functions + 腾讯云一句话识别，不再依赖浏览器原生 `SpeechRecognition`。
+- 在 EdgeOne Pages 项目环境变量中配置以下值：
+  - `TENCENTCLOUD_SECRET_ID`
+  - `TENCENTCLOUD_SECRET_KEY`
+  - `TENCENTCLOUD_REGION=ap-shanghai`
+  - `TENCENTCLOUD_ASR_ENG_SERVICE_TYPE=16k_en`
+- 服务端函数入口为 `cloud-functions/api/asr.js`，部署到 EdgeOne Pages 后会映射为 `/api/asr`。
+- 录音由前端转成 16k 单声道 WAV，再由服务端上传到腾讯云一句话识别接口，适合当前单词朗读测试的短音频场景。
+- 本地 `npm run dev` 只启动前端 Vite 页面，不会自动提供 `/api/asr`；要验证完整朗读测试，请部署到 EdgeOne Pages，或使用支持 Pages Functions 的本地调试方式。
+
 欢迎根据孩子水平继续增删改故事内容，保持单词简洁、句型短小。

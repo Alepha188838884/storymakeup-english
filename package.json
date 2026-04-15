@@ -2,7 +2,7 @@
   "name": "storymakeup-english",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",  
+  "type": "commonjs",
   "main": "electron/main.js",
   "description": "StoryMakeup English - 儿童英语拼句小故事",
   "author": "Your Name",
@@ -18,7 +18,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.0",
-    "segmentit": "^2.0.3"
+    "segmentit": "^2.0.3",
+    "tencentcloud-sdk-nodejs-asr": "^4.1.205"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
