@@ -31,9 +31,10 @@ npm run dev
   - `STORYMAKEUP_ASR_SECRET_KEY`
   - `STORYMAKEUP_ASR_REGION=ap-shanghai`
   - `STORYMAKEUP_ASR_ENG_SERVICE_TYPE=16k_en`
-- 服务端函数入口为 `node-functions/api/asr.js`，部署到 EdgeOne Pages 后会映射为 `/api/asr`。
+- 服务端函数入口为 `cloud-functions/api/asr.js`，部署到 EdgeOne Pages 后会映射为 `/api/asr`。
 - 录音由前端转成 16k 单声道 WAV，再由服务端上传到腾讯云一句话识别接口，适合当前单词朗读测试的短音频场景。
 - 代码目前优先读取 `STORYMAKEUP_ASR_*`，同时兼容旧的 `TENCENTCLOUD_*` 变量名，方便平滑迁移。
+- 项目根目录的 `edgeone.json` 已显式声明函数依赖 `tencentcloud-sdk-nodejs-asr`，避免部署后函数运行时缺包。
 - 本地 `npm run dev` 只启动前端 Vite 页面，不会自动提供 `/api/asr`；要验证完整朗读测试，请使用 `edgeone pages dev` 或部署到 EdgeOne Pages。
 
 欢迎根据孩子水平继续增删改故事内容，保持单词简洁、句型短小。

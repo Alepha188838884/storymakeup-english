@@ -1,0 +1,10 @@
+{
+  "cloudFunctions": {
+    "nodejs": {
+      "externalNodeModules": [
+        "tencentcloud-sdk-nodejs-asr"
+      ],
+      "maxDuration": 30
+    }
+  }
+}
