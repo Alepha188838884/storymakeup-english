@@ -125,6 +125,26 @@ const getFriendlyErrorMessage = (error) => {
   return '录音失败，请重试。'
 }
 
+const parseAsrError = async (response) => {
+  const contentType = response.headers.get('content-type') || ''
+
+  if (contentType.includes('application/json')) {
+    const payload = await response.json().catch(() => ({}))
+    return payload.message || `云端识别失败（HTTP ${response.status}）。`
+  }
+
+  const text = (await response.text().catch(() => '')).trim()
+  if (text) {
+    return `云端识别失败（HTTP ${response.status}）：${text.slice(0, 160)}`
+  }
+
+  if (response.status === 404) {
+    return '未找到 /api/asr 接口，请确认 EdgeOne Pages 已从 node-functions 目录部署函数。'
+  }
+
+  return `云端识别失败（HTTP ${response.status}），请检查函数部署和环境变量配置。`
+}
+
 function SpeechTest() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -215,10 +235,11 @@ function SpeechTest() {
         body: wavBuffer,
       })
 
-      const payload = await response.json().catch(() => ({}))
       if (!response.ok) {
-        throw new Error(payload.message || '云端识别失败，请检查服务端配置。')
+        throw new Error(await parseAsrError(response))
       }
+
+      const payload = await response.json().catch(() => ({}))
 
       if (attemptId !== attemptRef.current) return
 
